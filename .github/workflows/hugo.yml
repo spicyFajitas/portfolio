@@ -1,0 +1,31 @@
+name: Hugo Build and Deploy
+
+on:
+  push:
+    branches:
+      - main  # Adjust this to your main branch name
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: '0.88.1'  # Adjust to the version you're using
+
+      - name: Build Hugo Site
+        run: hugo --minify
+
+      # You may need to adjust the build directory if your Hugo configuration differs
+      - name: Deploy to Hosting
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public  # Adjust to your Hugo build directory
+          publish_branch: gh-pages  # Adjust to your deployment branch
+
